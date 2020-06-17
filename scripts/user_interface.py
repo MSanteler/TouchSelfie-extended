@@ -985,6 +985,7 @@ class UserInterface():
         img_effect = IMAGE_EFFECTS_LIST[fx_index-1]
         self.selected_image_effect = img_effect
         self.log.info("Effect " + str(img_effect) +" selected")
+        self.__preview_screen()
 
     def __choose_effect_screen(self):
         """Displays a screen from where user can choose a builtin effect
