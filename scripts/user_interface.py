@@ -981,7 +981,7 @@ class UserInterface():
         self.camera.resolution = EFFECTS_PARAMETERS["None"]['snap_size']
         self.camera.start_preview()
 
-    def __choose_specific_effect(self,fx_index=1):
+    def __choose_specific_effect(self,fx_index=2):
         img_effect = IMAGE_EFFECTS_LIST[fx_index-1]
         self.selected_image_effect = img_effect
         self.log.info("Effect " + str(img_effect) +" selected")
