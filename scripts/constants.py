@@ -9,7 +9,7 @@ Constants for the TouchSelfie program
     A dict of dict data structure to tune software buttons (in case of no hardware buttons)
 .. py:data:: HARDWARE_BUTTONS
     configuration of the hardware buttons' GPIO pins, pull_up_down state and active state
-.. py:data:: EMAIL_BUTTON_IMG  
+.. py:data:: EMAIL_BUTTON_IMG
     'send_email' button icon
 .. py:data:: OAUTH2_REFRESH_PERIOD
     interval between two OAuth2 token refresh (ms)
@@ -44,11 +44,11 @@ v1_quarter_size = (648,486)
 
 EFFECTS_PARAMETERS = {
     "None": {
-        'snap_size' : v2_full_size, #(width, height) => preferably use integer division of camera resolution
+        'snap_size' : v2_half_size, #(width, height) => preferably use integer division of camera resolution
         'logo_size' : 128,         # height in pixels of the logo (will be thumbnailed to this size)
         'logo_padding' : 32        # bottom and right padding of the logo (pixels)
     },
-    "Four": { 
+    "Four": {
         'snap_size' : v2_half_size,                       #(width, height) of each shots of the 2x2 collage
         'foreground_image' : "collage_four_square.png" # Overlay image on top of the collage
     },
@@ -75,10 +75,10 @@ SOFTWARE_BUTTONS = {
 
 # piCamera Builtin effects selection list
 # @see https://picamera.readthedocs.io/en/release-1.13/api_camera.html#picamera.PiCamera.image_effect
-# this constant maps a subset of picamera builtin effects 
+# this constant maps a subset of picamera builtin effects
 # and (optional) parameters to a thumbnail
 #
-# needed keys: 
+# needed keys:
 # - "effect_name": the name of the piCamera image_effect
 # - "effect_icon": path to the thumbnail that represents this effect (MUST be square)
 # - "effect_params": (opt) parameters for the effect (see image_effect_parameter)
@@ -107,7 +107,7 @@ IMAGE_EFFECTS = {
         "effect_icon": os.path.join(EFFECTS_THUMB_DIR,"eff_none.png")
     },
     # solarize would require some image analysis in order to set the right parameters
-    "solarize": { 
+    "solarize": {
         "effect_name":"solarize",
         "effect_icon": os.path.join(EFFECTS_THUMB_DIR,"eff_solarize.png")
     },
@@ -179,8 +179,19 @@ ACTIONS_KEYS_MAPPING = {
     "snap_None": ["s","S","<F1>"],
     "snap_Four": ["f","F","<F2>"],
     "snap_Animation": ["a","A","<F3>"],
+    "choose_effect": ["f","F","<F4>"],
+    "preview_screen": ["x","X"],
     "send_email":["e","@"],
-    "configure":["<Escape>"]
+    "configure":["<Escape>"],
+    "fx_1":["1"],
+    "fx_2":["2"],
+    "fx_3":["3"],
+    "fx_4":["4"],
+    "fx_5":["5"],
+    "fx_6":["6"],
+    "fx_7":["7"],
+    "fx_8":["8"],
+    "fx_9":["9"]
     #,"send_print":["P"] #Uncomment if you want to a keyboard shortcut for printing
 }
 

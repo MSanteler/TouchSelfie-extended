@@ -162,15 +162,26 @@ class UserInterface():
                 if not self.suspend_poll == True:
                     callback()
             return safe_execute
-            
+
         install_key_binding("snap_None",safe_execute_factory(lambda *args: self.snap("None")))
         install_key_binding("snap_Four",safe_execute_factory(lambda *args: self.snap("Four")))
         install_key_binding("snap_Animation",safe_execute_factory(lambda *args: self.snap("Animation")))
+        install_key_binding("choose_effect",safe_execute_factory(lambda *args: self.__choose_effect_screen()))
+        install_key_binding("preview_screen",safe_execute_factory(lambda *args: self.__preview_screen()))
         install_key_binding("send_email",safe_execute_factory(lambda *args: self.send_email()))
         install_key_binding("configure",safe_execute_factory(lambda *args: self.long_press_cb(self)))
         install_key_binding("send_print",safe_execute_factory(lambda *args: self.send_print()))
+        install_key_binding("fx_1",safe_execute_factory(lambda *args: self.__choose_specific_effect(1)))
+        install_key_binding("fx_2",safe_execute_factory(lambda *args: self.__choose_specific_effect(2)))
+        install_key_binding("fx_3",safe_execute_factory(lambda *args: self.__choose_specific_effect(3)))
+        install_key_binding("fx_4",safe_execute_factory(lambda *args: self.__choose_specific_effect(4)))
+        install_key_binding("fx_5",safe_execute_factory(lambda *args: self.__choose_specific_effect(5)))
+        install_key_binding("fx_6",safe_execute_factory(lambda *args: self.__choose_specific_effect(6)))
+        install_key_binding("fx_7",safe_execute_factory(lambda *args: self.__choose_specific_effect(7)))
+        install_key_binding("fx_8",safe_execute_factory(lambda *args: self.__choose_specific_effect(8)))
+        install_key_binding("fx_9",safe_execute_factory(lambda *args: self.__choose_specific_effect(9)))
         ## Bind keyboard keys to actions
-        
+
         self.full_screen = config.full_screen
         if config.full_screen:
             self.root.attributes("-fullscreen",True)
@@ -206,7 +217,7 @@ class UserInterface():
             self.print_btn.configure(background= 'black')
 
         self.send_emails = send_emails
-        
+
         #Create sendmail Button
         if self.send_emails:
             mail_image = Image.open(EMAIL_BUTTON_IMG)
@@ -215,7 +226,7 @@ class UserInterface():
             self.mail_btn  = Button(self.root,image = self.mail_imagetk, height=h, width=w, command=self.send_email )
             self.mail_btn.place(x=SCREEN_W-w-2, y=0)
             self.mail_btn.configure(background = 'black')
-            
+
         #Create image_effects button
         self.image_effects = image_effects
         self.selected_image_effect='none'
@@ -223,10 +234,10 @@ class UserInterface():
             effects_image = Image.open(EFFECTS_BUTTON_IMG)
             w,h = effects_image.size
             self.effects_imagetk = ImageTk.PhotoImage(effects_image)
-            self.effects_btn = Button(self.root, image = self.effects_imagetk, height=h, width=w, command=self.__choose_effect)
+            self.effects_btn = Button(self.root, image = self.effects_imagetk, height=h, width=w, command=self.__choose_effect_screen)
             self.effects_btn.place(x=SCREEN_W-w-2,y=int((SCREEN_H-h)/2))
             self.effects_btn.configure(background = 'black')
-            
+
         #Create status line
         self.status_lbl = Label(self.root, text="", font=("Helvetica", 20))
         self.status_lbl.config(background='black', foreground='white')
@@ -410,6 +421,7 @@ class UserInterface():
         Arguments:
             mode ("None"|"Four"|"Animation") : the selected mode
         """
+        self.camera.stop_preview()
         self.log.info("Snaping photo (mode=%s)" % mode)
         self.suspend_poll = True
         # clear status
@@ -418,6 +430,8 @@ class UserInterface():
         picture_taken = False
         picture_saved = False
         picture_uploaded = False
+
+        self.camera.stop_preview()
 
         if mode not in EFFECTS_PARAMETERS.keys():
             self.log.error("Wrong effectmode %s defaults to 'None'" % mode)
@@ -551,7 +565,7 @@ class UserInterface():
                 self.status("")
                 snap_filename = 'animation.gif'
                 self.last_picture_mime_type = 'image/gif'
-            
+
             # cancel image_effect (hotfix: effect was not reset to 'none' after each shot)
             self.selected_image_effect = 'none'
 
@@ -581,7 +595,7 @@ class UserInterface():
                     except Exception as e:
                         self.status("Error uploading image :(")
                         self.log.exception("snap: Error uploading image")
-                
+
                 # 3. Archive
                 if config.ARCHIVE:
                     self.log.info("Archiving image %s"%self.last_picture_title)
@@ -646,7 +660,7 @@ class UserInterface():
                         self.status("Saving failed :(")
                         self.log.exception("Image %s couldn't be saved"%self.last_picture_title)
                         picture_saved = False
-                        
+
 
             else:
                 # error
@@ -955,8 +969,24 @@ class UserInterface():
         status = "%s (%s) %s %s\n"%(ts,sendcode,mail_address,file_path)
         sendmail_log.write(status)
         sendmail_log.close()
-        
-    def __choose_effect(self):
+
+    def __preview_screen(self):
+        if self.image_effects:
+            try:
+                self.camera.image_effect = IMAGE_EFFECTS[self.selected_image_effect]['effect_name']
+                if 'effect_params' in IMAGE_EFFECTS[self.selected_image_effect]:
+                    self.camera.image_effect_params = IMAGE_EFFECTS[self.selected_image_effect]['effect_params']
+            except:
+                self.log.error("snap: Error setting effect to %s"%self.selected_image_effect)
+        self.camera.resolution = EFFECTS_PARAMETERS["None"]['snap_size']
+        self.camera.start_preview()
+
+    def __choose_specific_effect(self,fx_index=1):
+        img_effect = IMAGE_EFFECTS_LIST[fx_index-1]
+        self.selected_image_effect = img_effect
+        self.log.info("Effect " + str(img_effect) +" selected")
+
+    def __choose_effect_screen(self):
         """Displays a screen from where user can choose a builtin effect
         This modifies self.selected_image_effect
         """
@@ -971,13 +1001,13 @@ class UserInterface():
             top.attributes("-fullscreen",True)
         top.geometry('%dx%d+0+0'%(self.size[0],self.size[1]))
         top.configure(background='black')
-        
+
         #layout
         NCOLS=4
-        NROWS=3       
+        NROWS=3
         window_width = self.size[0]
         window_height = self.size[1]
-        
+
         button_size = min(int(window_width/NCOLS),int(window_height/NROWS))
         button_images =[]
         def cb_factory(img_effect):
@@ -986,7 +1016,7 @@ class UserInterface():
                 self.log.info("Effect " + str(img_effect) +" selected")
                 top.destroy()
             return mod_effect
-            
+
         effect_buttons=[]
         for index in range(len(IMAGE_EFFECTS_LIST)):
             effect = IMAGE_EFFECTS_LIST[index]
@@ -1010,9 +1040,9 @@ class UserInterface():
         top.columnconfigure(NCOLS+1,weight=1)
         top.rowconfigure(0, weight=1)
         top.rowconfigure(NROWS+1, weight=1)
-        
+
         self.root.wait_window(top)
-        
+
 if __name__ == '__main__':
 
     import argparse
@@ -1028,11 +1058,11 @@ if __name__ == '__main__':
     parser.add_argument("--log-level", type=str, choices=['DEBUG','INFO','WARNING','ERROR','CRITICAL'],
                     help="Log level (defaults to WARNING)")
     args = parser.parse_args()
-    
+
     if args.log_level is None:
         args.log_level = "INFO"
-        
-    
+
+
     #print args
     import configuration
     config = configuration.Configuration("configuration.json")
