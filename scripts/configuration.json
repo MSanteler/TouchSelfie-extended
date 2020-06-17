@@ -1,0 +1,22 @@
+{
+    "archive_to_all_usb_drives": true, 
+    "countdown_before_snap": 5, 
+    "countdown_inter_snap": 3, 
+    "email_body": "Greetings, here's your photo sent from the photobooth\n\n\n", 
+    "email_subject": "Here's your photo!", 
+    "enable_effects": true, 
+    "enable_email": true, 
+    "enable_email_logging": false, 
+    "enable_hardware_buttons": false, 
+    "enable_print": false, 
+    "enable_upload": true, 
+    "full_screen": true, 
+    "gmail_user": "santelerschislerwedding2020@gmail.com", 
+    "google_photo_album_id": "APot6BsGJK_kk6wfBxI44PHW91Ggp_XneI3tVK3CvFQiDnUZxkqGeT_c2NXpKbZ4MuFRfz7rs8Cl", 
+    "google_photo_album_name": "TouchSelfie", 
+    "local_archive": true, 
+    "local_archive_dir": "../Photos", 
+    "logo_file": null, 
+    "selected_printer": null, 
+    "snap_caption": ""
+}
