@@ -419,7 +419,7 @@ class UserInterface():
         """
         self.camera.stop_preview()
         self.log.info("Snaping photo (mode=%s)" % mode)
-        self.suspend_poll = True
+        # self.suspend_poll = True
         # clear status
         self.status("")
         # keep track of what's happening
