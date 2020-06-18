@@ -1040,7 +1040,7 @@ class UserInterface():
         self.__choose_specific_effect(index)
 
     def __choose_specific_effect(self,fx_index=2):
-        img_effect = IMAGE_EFFECTS_LIST[fx_index-1]
+        img_effect = IMAGE_EFFECTS_LIST[fx_index]
         self.selected_image_effect = img_effect
         self.log.info("Effect " + str(img_effect) +" selected")
         self.__preview_screen()
