@@ -548,7 +548,7 @@ class UserInterface():
                 # take 4 photos and merge into one image.
                 self.log.debug("turning off suspend")
                 self.suspend_poll = False
-                self.log.debug("Suspend Poll: "+ self.suspend_poll)
+                self.log.debug("Suspend Poll: "+ str(self.suspend_poll))
                 self.__show_countdown(config.countdown1,annotate_size = 80)
                 self.camera.capture('collage_1.jpg')
                 self.__show_countdown(config.countdown2,annotate_size = 80)
@@ -559,7 +559,7 @@ class UserInterface():
                 self.camera.capture('collage_4.jpg')
                 self.log.debug("turning on suspend")
                 self.suspend_poll = True
-                self.log.debug("Suspend Poll: "+ self.suspend_poll)
+                self.log.debug("Suspend Poll: "+ str(self.suspend_poll))
                 # Assemble collage
                 self.camera.stop_preview()
                 self.status("Assembling collage")
