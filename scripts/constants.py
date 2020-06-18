@@ -182,6 +182,7 @@ ACTIONS_KEYS_MAPPING = {
     "snap_Animation": ["a","A","<F3>"],
     "choose_effect": ["f","F","<F4>"],
     "preview_screen": ["x","X"],
+    "stop_preview_screen": ["c","C"],
     "send_email":["e","@"],
     "configure":["<Escape>"],
     "fx_forward":["j"],

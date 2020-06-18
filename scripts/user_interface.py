@@ -168,6 +168,7 @@ class UserInterface():
         install_key_binding("snap_Animation",safe_execute_factory(lambda *args: self.snap("Animation")))
         install_key_binding("choose_effect",safe_execute_factory(lambda *args: self.__choose_effect_screen()))
         install_key_binding("preview_screen",safe_execute_factory(lambda *args: self.__preview_screen()))
+        install_key_binding("stop_preview_screen",safe_execute_factory(lambda *args: self.__stop_preview_screen()))
         install_key_binding("send_email",safe_execute_factory(lambda *args: self.send_email()))
         install_key_binding("configure",safe_execute_factory(lambda *args: self.long_press_cb(self)))
         install_key_binding("send_print",safe_execute_factory(lambda *args: self.send_print()))
@@ -965,6 +966,17 @@ class UserInterface():
         sendmail_log.close()
 
     def __preview_screen(self):
+        if self.image_effects:
+            try:
+                self.camera.image_effect = IMAGE_EFFECTS[self.selected_image_effect]['effect_name']
+                if 'effect_params' in IMAGE_EFFECTS[self.selected_image_effect]:
+                    self.camera.image_effect_params = IMAGE_EFFECTS[self.selected_image_effect]['effect_params']
+            except:
+                self.log.error("snap: Error setting effect to %s"%self.selected_image_effect)
+        self.camera.resolution = EFFECTS_PARAMETERS["None"]['snap_size']
+        self.camera.start_preview()
+
+    def __stop_preview_screen(self):
         if self.image_effects:
             try:
                 self.camera.image_effect = IMAGE_EFFECTS[self.selected_image_effect]['effect_name']
