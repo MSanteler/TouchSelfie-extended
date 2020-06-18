@@ -165,7 +165,7 @@ class UserInterface():
 
         # Factory to launch actions only when no snap is being processed
         def unsafe_execute_factory(callback):
-            def safe_execute(args):
+            def unsafe_execute(args):
                 callback()
             return unsafe_execute
 
