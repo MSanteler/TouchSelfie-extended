@@ -1024,10 +1024,10 @@ class UserInterface():
                     self.camera.image_effect_params = IMAGE_EFFECTS[self.selected_image_effect]['effect_params']
             except:
                 self.log.error("snap: Error setting effect to %s"%self.selected_image_effect)
-        self.camera.preview.fullscreen = True
-        self.camera.preview.hflip = True  #Mirror effect for easier selfies
         self.camera.resolution = EFFECTS_PARAMETERS["None"]['snap_size']
         self.camera.start_preview()
+        self.camera.preview.fullscreen = True
+        self.camera.preview.hflip = True  #Mirror effect for easier selfies
 
     def __stop_preview_screen(self):
         self.camera.stop_preview()
