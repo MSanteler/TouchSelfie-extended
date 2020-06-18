@@ -273,6 +273,7 @@ class UserInterface():
             log_level = self.log_level)
 
         #Hardware buttons
+        self.log.debug("buttons_pins_len: "+ str(len(HARDWARE_BUTTONS['button_pins'])))
         if hardware_buttons:
             self.buttons = HWB.Buttons( buttons_pins = HARDWARE_BUTTONS['button_pins'], mode = HARDWARE_BUTTONS["pull_up_down"], active_state = HARDWARE_BUTTONS["active_state"])
         else:
