@@ -100,7 +100,7 @@ class LongPressDetector:
 
 class UserInterface():
     """A User Interface for the photobooth"""
-    def __init__(self, config, window_size=None, poll_period=HARDWARE_POLL_PERIOD, log_level=logging.WARNING):
+    def __init__(self, config, window_size=None, poll_period=HARDWARE_POLL_PERIOD, log_level=logging.DEBUG):
         """Constructor for the UserInterface object
 
         Arguments:
