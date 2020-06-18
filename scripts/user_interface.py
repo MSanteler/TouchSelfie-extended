@@ -171,15 +171,9 @@ class UserInterface():
         install_key_binding("send_email",safe_execute_factory(lambda *args: self.send_email()))
         install_key_binding("configure",safe_execute_factory(lambda *args: self.long_press_cb(self)))
         install_key_binding("send_print",safe_execute_factory(lambda *args: self.send_print()))
-        install_key_binding("fx_1",safe_execute_factory(lambda *args: self.__choose_specific_effect(1)))
-        install_key_binding("fx_2",safe_execute_factory(lambda *args: self.__choose_specific_effect(2)))
-        install_key_binding("fx_3",safe_execute_factory(lambda *args: self.__choose_specific_effect(3)))
-        install_key_binding("fx_4",safe_execute_factory(lambda *args: self.__choose_specific_effect(4)))
-        install_key_binding("fx_5",safe_execute_factory(lambda *args: self.__choose_specific_effect(5)))
-        install_key_binding("fx_6",safe_execute_factory(lambda *args: self.__choose_specific_effect(6)))
-        install_key_binding("fx_7",safe_execute_factory(lambda *args: self.__choose_specific_effect(7)))
-        install_key_binding("fx_8",safe_execute_factory(lambda *args: self.__choose_specific_effect(8)))
-        install_key_binding("fx_9",safe_execute_factory(lambda *args: self.__choose_specific_effect(9)))
+        install_key_binding("fx_forward",safe_execute_factory(lambda *args: self.__fx_forward()))
+        install_key_binding("fx_backward",safe_execute_factory(lambda *args: self.__fx_backward()))
+        install_key_binding("fx_clear",safe_execute_factory(lambda *args: self.__choose_specific_effect(1)))
         ## Bind keyboard keys to actions
 
         self.full_screen = config.full_screen
@@ -980,6 +974,16 @@ class UserInterface():
                 self.log.error("snap: Error setting effect to %s"%self.selected_image_effect)
         self.camera.resolution = EFFECTS_PARAMETERS["None"]['snap_size']
         self.camera.start_preview()
+
+    def __fx_forward(self):
+        img_effect = self.selected_image_effect
+        index = IMAGE_EFFECTS_LIST.indx(img_effect) + 1
+        __choose_specific_effect(index)
+
+    def __fx_backward(self):
+        img_effect = self.selected_image_effect
+        index = IMAGE_EFFECTS_LIST.indx(img_effect) - 1
+        __choose_specific_effect(index)
 
     def __choose_specific_effect(self,fx_index=2):
         img_effect = IMAGE_EFFECTS_LIST[fx_index-1]

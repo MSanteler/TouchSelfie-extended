@@ -184,15 +184,9 @@ ACTIONS_KEYS_MAPPING = {
     "preview_screen": ["x","X"],
     "send_email":["e","@"],
     "configure":["<Escape>"],
-    "fx_1":["1"],
-    "fx_2":["2"],
-    "fx_3":["3"],
-    "fx_4":["4"],
-    "fx_5":["5"],
-    "fx_6":["6"],
-    "fx_7":["7"],
-    "fx_8":["8"],
-    "fx_9":["9"]
+    "fx_forward":["j"],
+    "fx_backward":["k"],
+    "fx_clear":["m"]
     #,"send_print":["P"] #Uncomment if you want to a keyboard shortcut for printing
 }
 
