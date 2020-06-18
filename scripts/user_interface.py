@@ -488,7 +488,7 @@ class UserInterface():
                 snap_filename = 'snapshot.jpg'
                 self.last_picture_mime_type = 'image/jpg'
 
-            elif mode == 'Four':
+            elif mode == 'Four_old':
                 # collage of four shots
                 # compute collage size
                 self.log.debug("snap: starting collage of four")
@@ -505,6 +505,57 @@ class UserInterface():
                 self.camera.capture('collage_3.jpg')
                 self.__show_countdown(config.countdown2,annotate_size = 80)
                 self.camera.capture('collage_4.jpg')
+                # Assemble collage
+                self.camera.stop_preview()
+                self.status("Assembling collage")
+                self.log.debug("snap: assembling collage")
+                snapshot = Image.new('RGBA', (w_, h_))
+                snapshot.paste(Image.open('collage_1.jpg'), (  0,   0,  w, h))
+                snapshot.paste(Image.open('collage_2.jpg'), (w,   0, w_, h))
+                snapshot.paste(Image.open('collage_3.jpg'), (  0, h,  w, h_))
+                snapshot.paste(Image.open('collage_4.jpg'), (w, h, w_, h_))
+                picture_taken = True
+                #paste the collage enveloppe if it exists
+                try:
+                    self.log.debug("snap: Adding  the collage cover")
+                    front = Image.open(EFFECTS_PARAMETERS[mode]['foreground_image'])
+                    front = front.resize((w_,h_))
+                    front = front.convert('RGBA')
+                    snapshot = snapshot.convert('RGBA')
+                    #print snapshot
+                    #print front
+                    snapshot=Image.alpha_composite(snapshot,front)
+
+                except Exception, e:
+                    self.log.error("snap: unable to paste collage cover: %s"%repr(e))
+
+
+                self.status("")
+                snapshot = snapshot.convert('RGB')
+                self.log.debug("snap: Saving collage")
+                snapshot.save('collage.jpg')
+                snap_filename = 'collage.jpg'
+                self.last_picture_mime_type = 'image/jpg'
+
+            elif mode == 'Four':
+                # collage of four shots
+                # compute collage size
+                self.log.debug("snap: starting collage of four")
+                w = snap_size[0]
+                h = snap_size[1]
+                w_ = w * 2
+                h_ = h * 2
+                # take 4 photos and merge into one image.
+                self.suspend_poll = False
+                self.__show_countdown(config.countdown1,annotate_size = 80)
+                self.camera.capture('collage_1.jpg')
+                self.__show_countdown(config.countdown2,annotate_size = 80)
+                self.camera.capture('collage_2.jpg')
+                self.__show_countdown(config.countdown2,annotate_size = 80)
+                self.camera.capture('collage_3.jpg')
+                self.__show_countdown(config.countdown2,annotate_size = 80)
+                self.camera.capture('collage_4.jpg')
+                self.suspend_poll = True
                 # Assemble collage
                 self.camera.stop_preview()
                 self.status("Assembling collage")
