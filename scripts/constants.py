@@ -45,7 +45,7 @@ v1_quarter_size = (648,486)
 
 EFFECTS_PARAMETERS = {
     "None": {
-        'snap_size' : v2_custom_size, #(width, height) => preferably use integer division of camera resolution
+        'snap_size' : v2_half_size, #(width, height) => preferably use integer division of camera resolution
         'logo_size' : 128,         # height in pixels of the logo (will be thumbnailed to this size)
         'logo_padding' : 32        # bottom and right padding of the logo (pixels)
     },
