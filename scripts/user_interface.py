@@ -398,6 +398,7 @@ class UserInterface():
         if not self.suspend_poll == True:
             #self.status('')
             btn_state = self.buttons.state()
+            self.log.warning("button state: "+ str(self.buttons.state()))
             if btn_state == 1:
                 self.snap("None")
             elif btn_state == 2:
