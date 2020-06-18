@@ -404,6 +404,12 @@ class UserInterface():
                 self.snap("Four")
             elif btn_state == 3:
                 self.snap("Animation")
+            elif btn_state == 4:
+                self.__fx_backward()
+            elif btn_state == 5:
+                self.__fx_forward()
+            elif btn_state == 6:
+                self.__choose_specific_effect(0)
         self.poll_after_id = self.root.after(self.poll_period, self.run_periodically)
 
     def snap(self,mode="None"):
