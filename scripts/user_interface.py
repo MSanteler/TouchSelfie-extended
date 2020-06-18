@@ -977,12 +977,12 @@ class UserInterface():
 
     def __fx_forward(self):
         img_effect = self.selected_image_effect
-        index = IMAGE_EFFECTS_LIST.indx(img_effect) + 1
+        index = IMAGE_EFFECTS_LIST.index(img_effect) + 1
         __choose_specific_effect(index)
 
     def __fx_backward(self):
         img_effect = self.selected_image_effect
-        index = IMAGE_EFFECTS_LIST.indx(img_effect) - 1
+        index = IMAGE_EFFECTS_LIST.index(img_effect) - 1
         __choose_specific_effect(index)
 
     def __choose_specific_effect(self,fx_index=2):
