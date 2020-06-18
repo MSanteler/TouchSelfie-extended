@@ -175,7 +175,7 @@ class UserInterface():
         install_key_binding("send_print",safe_execute_factory(lambda *args: self.send_print()))
         install_key_binding("fx_forward",lambda *args: self.__fx_forward())
         install_key_binding("fx_backward",lambda *args: self.__fx_backward())
-        install_key_binding("fx_clear",lambda *args: self.__choose_specific_effect(1))
+        install_key_binding("fx_clear",lambda *args: self.__choose_specific_effect(0))
         ## Bind keyboard keys to actions
 
         self.full_screen = config.full_screen
