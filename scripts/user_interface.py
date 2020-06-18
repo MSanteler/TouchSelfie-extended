@@ -163,11 +163,6 @@ class UserInterface():
                     callback()
             return safe_execute
 
-        # Factory to launch actions only when no snap is being processed
-        def unsafe_execute_factory(callback):
-            def unsafe_execute(args):
-                callback()
-            return unsafe_execute
 
         install_key_binding("snap_None",safe_execute_factory(lambda *args: self.snap("None")))
         install_key_binding("snap_Four",safe_execute_factory(lambda *args: self.snap("Four")))
@@ -178,9 +173,9 @@ class UserInterface():
         install_key_binding("send_email",safe_execute_factory(lambda *args: self.send_email()))
         install_key_binding("configure",safe_execute_factory(lambda *args: self.long_press_cb(self)))
         install_key_binding("send_print",safe_execute_factory(lambda *args: self.send_print()))
-        install_key_binding("fx_forward",unsafe_execute_factory(lambda *args: self.__fx_forward()))
-        install_key_binding("fx_backward",unsafe_execute_factory(lambda *args: self.__fx_backward()))
-        install_key_binding("fx_clear",unsafe_execute_factory(lambda *args: self.__choose_specific_effect(1)))
+        install_key_binding("fx_forward",lambda *args: self.__fx_forward())
+        install_key_binding("fx_backward",lambda *args: self.__fx_backward())
+        install_key_binding("fx_clear",lambda *args: self.__choose_specific_effect(1))
         ## Bind keyboard keys to actions
 
         self.full_screen = config.full_screen
