@@ -3,6 +3,16 @@
     Laurent Alacoque 2o18
 '''
 
+import logging
+log = logging.getLogger(__name__)
+logging.getLogger("PIL").setLevel(logging.WARNING)
+logging.basicConfig(format='%(asctime)s|%(name)-16s| %(levelname)-8s| %(message)s',
+            datefmt='%Y-%m-%d %H:%M:%S',
+            filename='touchselfie.log',
+            filemode='w',
+            level = logging.DEBUG)
+
+
 RPI_GPIO_EXISTS = True
 
 # Predefine variables
@@ -23,21 +33,25 @@ except ImportError:
 
 class Buttons():
     """Hardware Buttons wrapper class"""
-    
+
     def __init__(self, buttons_pins=BUTTONS_PINS, mode=BUTTONS_MODE, active_state=BUTTON_IS_ACTIVE):
         """Constructor for Buttons
-        
+
         Arguments:
             button_pins [list(int)]         : list of GPIO pins
             mode ["pull_up" or "pull_down"] : the pull state of the GPIO
             active_state [0 or 1]           : GPIO status when activated
-        
+
         Note: this is safe to use this class on systems that don't have GPIO module
             in this case, has_buttons() methods returns False
         """
+        self.log = logging.getLogger("hardware")
+        self.log_level = logging.DEBUG
+        self.log.setLevel(self.log_level)
+
         self.buttons_pins = buttons_pins
 
-            
+
         self.active_state = active_state
         self._has_buttons = False
         if RPI_GPIO_EXISTS:
@@ -49,40 +63,41 @@ class Buttons():
                 raise ValueError("Unknown pull_up_down mode %s"%mode)
             GPIO.setmode(GPIO.BOARD)
             for pin in self.buttons_pins:
+                log.warning("Setting pin: "+str(pin))
                 GPIO.setup(pin, GPIO.IN, pull_up_down = self.mode)
             if len(buttons_pins) != 0:
                 self._has_buttons = True
             else:
                 self._has_buttons = False
-    
+
     def __del__(self):
         """Cleanup GPIO"""
         if self._has_buttons:
             GPIO.cleanup()
-            
+
     def has_buttons(self):
         """Wether buttons were configured
-        
+
         returns: True if at lease one button configured
         """
         return self._has_buttons
-        
+
     def buttons_number(self):
         """Number of configured hardware buttons
-        
+
         returns: the number of buttons configured
         """
         return len(self.buttons_pins)
-        
+
     def state(self):
         """Current state of the hardware buttons
-        
+
         buttons are checked in the order provided to the constructor
-        as soon as a button state == active_state, the loop ends and the 
+        as soon as a button state == active_state, the loop ends and the
         index of the active button is returned (first items of the buttons list
         therefore have higher priority)
-        
-        returns: 
+
+        returns:
             0 if no button currently active
             i (i>0) the index of the first active button with:
                 i=1 => button_pins[0] is active
