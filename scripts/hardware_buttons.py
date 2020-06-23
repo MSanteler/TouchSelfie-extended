@@ -106,14 +106,15 @@ class Buttons():
         """
         if not self._has_buttons:
             return 0
-        
+
         for i,pin in enumerate(self.buttons_pins,1):
             if GPIO.input(pin) == self.active_state:
+                log.warning("GPIO: "+str(pin)+" pressed!")
                 return i
         else :
             # reached the end of pins, none active
             return 0
-        
+
 if __name__ == '__main__':
     import time
     import sys
